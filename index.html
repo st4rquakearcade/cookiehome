@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko" data-root="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STARQUAKE ARCADE</title>
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/loader.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+  <link rel="stylesheet" href="assets/css/cursor.css" />
+  <link rel="stylesheet" href="assets/css/scroll.css" />
+  <script>window.SQ = { root: "" };</script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script defer src="assets/js/firebase-config.js"></script>
+  <script defer src="assets/js/db.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/page-shell.js"></script>
+  <script defer src="assets/js/cursor.js"></script>
+  <script defer src="assets/js/scroll.js"></script>
+</head>
+<body>
+  <div class="page-loader" id="page-loader"><div class="loader"></div></div>
+  <nav id="site-nav" class="site-nav" data-active="home" aria-label="주 메뉴"></nav>
+
+  <!-- SVG Gooey 필터 (gooey-search-main 참조) -->
+  <svg class="home-search__filter" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="goo-filter">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+        <feColorMatrix in="blur" type="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -15"
+          result="goo" />
+        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+      </filter>
+    </defs>
+  </svg>
+
+  <main class="page page--center">
+    <p class="home-handle"><a href="pages/write.html" id="home-handle">@ST4RQUADE</a><a href="pages/skin.html" class="page-skin-link">SKIN</a></p>
+    <h1 class="home-title" id="home-title">STARQUAKE<br />ARCADE</h1>
+    <div class="home-image" id="home-image">
+      <span class="home-image__placeholder">IMAGE DISPLAY</span>
+    </div>
+    <p class="home-desc" id="home-desc">텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트</p>
+
+    <!-- 홈 푸터 검색 -->
+    <div class="home-search">
+      <div class="goo-wrap" id="goo-wrap">
+        <button type="button" class="goo-btn" id="goo-open" aria-label="검색">SEARCH</button>
+        <div class="goo-input-wrap" role="search">
+          <input
+            type="search"
+            id="goo-input"
+            class="goo-input"
+            placeholder="Search posts..."
+            autocomplete="off"
+            aria-label="검색어 입력"
+          />
+          <button type="button" class="goo-close" id="goo-close" aria-label="검색 닫기">×</button>
+        </div>
+        <div class="goo-results" id="goo-results" role="listbox" aria-live="polite"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Getting Started 슬라이드업 (html-in-canvas 참조, EasingQuads InOut) -->
+  <div class="home-started" id="home-started" aria-label="페이지 이동">
+    <div class="home-started__inner">
+      <span class="home-started__label">GETTING STARTED</span>
+      <nav class="home-started__nav">
+        <a href="pages/notice.html">NOTICE</a>
+        <a href="pages/archive.html">ARCHIVE</a>
+        <a href="pages/calendar.html">CALENDAR</a>
+        <a href="pages/pair-list.html">PAIR</a>
+        <a href="pages/log.html">LOG</a>
+        <a href="pages/memo.html">MEMO</a>
+        <a href="pages/guest.html">GUEST</a>
+        <a href="pages/banner.html">BANNER</a>
+      </nav>
+    </div>
+  </div>
+
+  <button type="button" class="scroll-top" id="scroll-top" aria-label="맨 위로"><div class="arrow-top"></div><div class="arrow-bottom"></div></button>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /* ── 사이트 데이터 로드 ── */
+    SQApp.loadData("data/site.json", "site").then(function (data) {
+      if (!data) return;
+      document.getElementById("home-handle").textContent = data.handle || "";
+      var title = data.title || ["STARQUAKE", "ARCADE"];
+      document.getElementById("home-title").innerHTML = SQApp.esc(title[0]) + "<br />" + SQApp.esc(title[1] || "");
+      document.getElementById("home-desc").textContent = data.description || "";
+      var box = document.getElementById("home-image");
+      if (data.image) {
+        box.innerHTML = '<img src="' + SQApp.esc(data.image) + '" alt="" />';
+      }
+    });
+
+    /* ── 검색 (gooey-search-main 참조) ── */
+    (function () {
+      var wrap    = document.getElementById("goo-wrap");
+      var openBtn = document.getElementById("goo-open");
+      var closeBtn= document.getElementById("goo-close");
+      var input   = document.getElementById("goo-input");
+      var results = document.getElementById("goo-results");
+
+      var allPosts = [];
+      var debounceTimer = null;
+
+      /* posts 데이터 미리 로드 (배열 또는 { posts: [] } 구조 모두 처리) */
+      SQApp.loadData("data/posts.json", "posts").then(function (data) {
+        if (Array.isArray(data)) {
+          allPosts = data;
+        } else if (data && Array.isArray(data.posts)) {
+          allPosts = data.posts;
+        } else {
+          allPosts = [];
+        }
+        /* 비밀글/미발행 제외 */
+        allPosts = allPosts.filter(function (p) { return !p.secret && p.published !== false; });
+      }).catch(function () {});
+
+      function openSearch() {
+        wrap.classList.add("is-open");
+        setTimeout(function () { input && input.focus(); }, 80);
+      }
+
+      function closeSearch() {
+        wrap.classList.remove("is-open");
+        if (input) input.value = "";
+        if (results) results.innerHTML = "";
+      }
+
+      function search(q) {
+        if (!q) { results.innerHTML = ""; return; }
+        var matched = allPosts.filter(function (p) {
+          var title = (p.title || "").toLowerCase();
+          var body  = (p.subtitle || p.category || "").toLowerCase();
+          var lq = q.toLowerCase();
+          return title.indexOf(lq) >= 0 || body.indexOf(lq) >= 0;
+        }).slice(0, 8);
+
+        if (!matched.length) {
+          results.innerHTML = '<p class="goo-no-results">검색 결과가 없습니다.</p>';
+          return;
+        }
+        results.innerHTML = matched.map(function (p, i) {
+          /* 게시판 페이지로 이동 (개별 post 페이지 없음) */
+          var board = p.board || "notice";
+          var href = "pages/" + SQApp.esc(board) + ".html?id=" + SQApp.esc(p.id);
+          return '<a class="goo-result-item" href="' + href + '" style="animation-delay:' + (i * 40) + 'ms">' +
+            SQApp.esc(p.title || "제목 없음") +
+            '</a>';
+        }).join("");
+      }
+
+      if (openBtn) openBtn.addEventListener("click", openSearch);
+      if (closeBtn) closeBtn.addEventListener("click", closeSearch);
+
+      if (input) {
+        input.addEventListener("input", function () {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function () { search(input.value.trim()); }, 280);
+        });
+      }
+
+      /* 외부 클릭 시 닫기 */
+      document.addEventListener("click", function (e) {
+        if (!wrap.contains(e.target)) closeSearch();
+      });
+
+      /* ESC */
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeSearch();
+      });
+    })();
+
+    /* ── Getting Started 슬라이드업 (EasingQuads InOut) ── */
+    (function () {
+      var started = document.getElementById("home-started");
+      if (!started) return;
+
+      var THRESHOLD = 0.75; /* 뷰포트 75% 이하 y좌표에서 슬라이드업 */
+      var hideTimer = null;
+
+      function onMouseMove(e) {
+        var ratio = e.clientY / window.innerHeight;
+        if (ratio >= THRESHOLD) {
+          /* 커서가 하단 25% 영역에 진입 */
+          clearTimeout(hideTimer);
+          started.classList.add("is-near-bottom");
+        } else {
+          /* 커서가 상단으로 이동 — 짧은 딜레이 후 숨김 */
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(function () {
+            started.classList.remove("is-near-bottom");
+          }, 200);
+        }
+      }
+
+      function onMouseLeave() {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () {
+          started.classList.remove("is-near-bottom");
+        }, 300);
+      }
+
+      document.addEventListener("mousemove", onMouseMove, { passive: true });
+      document.addEventListener("mouseleave", onMouseLeave, { passive: true });
+
+      /* 모바일: 탭하면 토글 */
+      document.addEventListener("touchend", function (e) {
+        var y = e.changedTouches[0].clientY;
+        var ratio = y / window.innerHeight;
+        if (ratio >= THRESHOLD) {
+          started.classList.toggle("is-near-bottom");
+        }
+      }, { passive: true });
+    })();
+  });
+  </script>
+</body>
+</html>

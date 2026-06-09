@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTDB 시드</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; background: #eee; color: #5e5e5e; }
+    pre { background: #fff; padding: 12px; white-space: pre-wrap; }
+    button { margin-top: 12px; padding: 8px 16px; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/db.js?v=2"></script>
+</head>
+<body>
+  <h1>RTDB 시드</h1>
+  <p id="status">Firebase 연결 확인 중…</p>
+  <button type="button" id="seed-btn">JSON → RTDB 업로드</button>
+  <pre id="log"></pre>
+  <script>
+  (function () {
+    var status = document.getElementById("status");
+    var log = document.getElementById("log");
+    var nodes = ["site", "notice", "profile", "pair", "posts", "calendar"];
+
+    function write(msg) {
+      log.textContent += msg + "\n";
+    }
+
+    if (!SQDb.ready()) {
+      status.textContent = "Firebase 미연결 — firebase-config.js 확인";
+      return;
+    }
+
+    status.textContent = "연결됨 — 업로드 버튼을 누르세요";
+
+    document.getElementById("seed-btn").addEventListener("click", function () {
+      status.textContent = "업로드 중…";
+      log.textContent = "";
+      Promise.all(
+        nodes.map(function (node) {
+          return fetch("data/" + node + ".json", { cache: "no-store" })
+            .then(function (r) {
+              if (!r.ok) throw new Error(node + " JSON 로드 실패");
+              return r.json();
+            })
+            .then(function (data) {
+              return SQDb.push(node, data).then(function (ok) {
+                if (!ok) throw new Error(node + " 쓰기 실패");
+                write(node + ": OK");
+                return true;
+              });
+            });
+        })
+      )
+        .then(function () {
+          status.textContent = "시드 완료";
+          return SQDb.fetch("site");
+        })
+        .then(function (site) {
+          write("site 확인: " + JSON.stringify(site));
+        })
+        .catch(function (err) {
+          status.textContent = "실패";
+          write(String(err && err.message ? err.message : err));
+        });
+    });
+  })();
+  </script>
+</body>
+</html>

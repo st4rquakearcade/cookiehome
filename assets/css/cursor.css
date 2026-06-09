@@ -1,0 +1,58 @@
+/* =====================================================
+   cursor.css — 커스텀 커서 (렌즈 효과, Demo 4 스타일)
+   ===================================================== */
+
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+.cursor-inner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 8px;
+  height: 8px;
+  background: var(--text);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s, transform 0.1s;
+  will-change: transform;
+}
+
+.cursor-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--text);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.76, 0, 0.24, 1),
+              height 0.3s cubic-bezier(0.76, 0, 0.24, 1),
+              background 0.2s,
+              opacity 0.2s;
+  will-change: transform;
+  /* lens: 25% magnification overlay */
+  backdrop-filter: invert(0.08) blur(0px);
+}
+
+.cursor-outer.is-stuck {
+  width: 56px;
+  height: 56px;
+  background: rgba(94, 94, 94, 0.08);
+}
+
+.cursor-inner.is-hidden {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+@media (hover: none) {
+  .cursor-inner, .cursor-outer { display: none; }
+  *, *::before, *::after { cursor: auto !important; }
+}

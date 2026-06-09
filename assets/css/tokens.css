@@ -1,0 +1,15 @@
+@import url("fonts.css");
+
+:root {
+  --bg: #eeeeee;
+  --text: #5e5e5e;
+  --muted: #c6c6c6;
+  --font: "Presentation", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    Pretendard, "Malgun Gothic", sans-serif;
+  --font-title: "SpecialGothicExpanded", "Presentation", -apple-system, sans-serif;
+  --nav-h: 72px;
+  --content-w: 460px;
+  --pair-w: 720px;
+  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --hero-h: 220px;
+}

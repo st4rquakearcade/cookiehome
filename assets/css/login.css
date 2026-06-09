@@ -1,0 +1,102 @@
+/* =====================================================
+   login.css — PRIVATE AREA 로그인 페이지
+   ===================================================== */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nav-h) 24px 80px;
+}
+
+.login-wrap {
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.login-title {
+  font-family: var(--font-title);
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.login-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid var(--text);
+}
+
+.login-label {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  padding: 14px 20px 14px 0;
+  min-width: 48px;
+  text-align: left;
+}
+
+.login-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--text);
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.login-input {
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 14px 0;
+}
+
+.login-input::placeholder {
+  color: var(--muted);
+}
+
+.login-error {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  min-height: 1.4em;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.login-btn {
+  margin-top: 28px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: none;
+  border: 1px solid var(--text);
+  padding: 10px 32px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.login-btn:hover {
+  opacity: 0.6;
+}

@@ -1,0 +1,159 @@
+/* =====================================================
+   board.css — 게시판 공통 (avocado_skin 구조 참조)
+   ===================================================== */
+
+/* ── 게시판 목록 (avocado-list 구조 참조) ── */
+.board-list {
+  width: 100%;
+  max-width: var(--content-w);
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+
+.board-item {
+  border-bottom: 1px solid var(--muted);
+  transition: background 0.15s;
+}
+
+.board-item:hover {
+  background: rgba(94, 94, 94, 0.04);
+}
+
+.board-item a {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 12px 0;
+  text-decoration: none;
+  color: var(--text);
+}
+
+/* 카테고리 뱃지 */
+.board-item__cat {
+  flex-shrink: 0;
+  font-family: var(--font-title);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: 72px;
+}
+
+/* 제목 */
+.board-item__title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 핀 */
+.board-item--pinned .board-item__title::before {
+  content: "★ ";
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* 메타 (이름, 날짜) */
+.board-item__meta {
+  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── 상세 뷰 (클릭 시 인라인 확장) ── */
+.board-detail {
+  display: none;
+  padding: 20px 0 24px;
+  border-bottom: 1px solid var(--muted);
+}
+
+.board-detail.is-open {
+  display: block;
+}
+
+.board-detail__title {
+  font-family: "Presentation", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.board-detail__meta {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--muted);
+}
+
+.board-detail__body {
+  font-family: "Presentation", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.board-detail__close {
+  display: block;
+  margin-top: 16px;
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  font-family: var(--font-title);
+  font-size: 10px;
+}
+
+.board-detail__close:hover { color: var(--text); }
+
+/* ── 빈 상태 ── */
+.board-empty {
+  padding: 48px 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ── 글쓰기 링크 ── */
+.board-write-link {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--muted);
+  padding-bottom: 1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.board-write-link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}

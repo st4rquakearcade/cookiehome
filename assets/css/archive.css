@@ -1,0 +1,484 @@
+/* =====================================================
+   archive.css — ARCHIVE 페이지
+   ===================================================== */
+
+/* ── 카테고리 탭 네비 ── */
+.arc-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--text);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.arc-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.arc-nav__btn {
+  font: inherit;
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px 10px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.arc-nav__btn:hover {
+  color: var(--text);
+}
+
+.arc-nav__btn.is-active {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
+/* ── 뮤직 시각화 ── */
+.arc-vis {
+  width: 100%;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.arc-vis__canvas {
+  display: block;
+  width: 100%;
+  height: 80px;
+  background: transparent;
+}
+
+.arc-vis__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.arc-vis--idle .arc-vis__label {
+  opacity: 1;
+}
+
+/* ── 아이템 그리드 ── */
+.arc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 16px;
+}
+
+@media (max-width: 520px) {
+  .arc-grid { grid-template-columns: 1fr; }
+}
+
+/* ── 아이템 카드 ── */
+.arc-item {
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1),
+    transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.arc-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arc-item__cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--muted);
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.arc-item--music .arc-item__cover {
+  aspect-ratio: 1 / 1;
+}
+
+.arc-item__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.arc-item:hover .arc-item__cover img {
+  transform: scale(1.04);
+}
+
+.arc-item__cover-placeholder {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--bg);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* 오버레이 레이블 */
+.arc-item__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(94, 94, 94, 0.0);
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.arc-item:hover .arc-item__overlay {
+  opacity: 1;
+}
+
+.arc-item__meta {
+  margin-bottom: 4px;
+}
+
+.arc-item__title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arc-item__sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.arc-item__note {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* ── 별점 ── */
+.arc-rating {
+  display: flex;
+  gap: 2px;
+  margin-top: 5px;
+}
+
+.arc-rating__star {
+  font-size: 13px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.1s, transform 0.1s;
+  user-select: none;
+}
+
+.arc-rating__star.is-filled {
+  color: var(--text);
+}
+
+.arc-rating__star:hover {
+  transform: scale(1.2);
+  color: var(--text);
+}
+
+/* ── 상세 오버레이 (클릭 시) ── */
+.arc-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.arc-detail.is-open {
+  pointer-events: auto;
+}
+
+.arc-detail__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(94, 94, 94, 0.0);
+  transition: background 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.arc-detail.is-open .arc-detail__backdrop {
+  background: rgba(94, 94, 94, 0.25);
+}
+
+.arc-detail__panel {
+  position: relative;
+  width: min(380px, 90vw);
+  height: 100%;
+  background: var(--bg);
+  border-left: 1px solid var(--text);
+  padding: 28px 24px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.arc-detail.is-open .arc-detail__panel {
+  transform: translateX(0);
+}
+
+.arc-detail__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.arc-detail__close:hover { color: var(--text); }
+
+.arc-detail__cover {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--muted);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.arc-detail--music .arc-detail__cover {
+  aspect-ratio: 1 / 1;
+}
+
+.arc-detail__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arc-detail__title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.arc-detail__sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.arc-detail__note {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.arc-detail__rating {
+  margin-bottom: 16px;
+}
+
+/* ── 뮤직 오디오 플레이어 ── */
+.arc-audio {
+  margin-top: 16px;
+}
+
+.arc-audio__url {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.arc-audio__url input {
+  flex: 1;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--text);
+}
+
+.arc-audio__url button {
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.arc-audio__player {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.arc-audio__player audio {
+  width: 100%;
+}
+
+/* ── 하단 푸터 버튼 ── */
+.arc-footer {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--muted);
+}
+
+.arc-footer__btn {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.arc-footer__btn:hover { color: var(--text); }
+
+/* ── 상세 패널 댓글 ── */
+.arc-comments {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--muted);
+}
+
+.arc-comments__label {
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.arc-comment-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.arc-comment-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(94,94,94,0.15);
+}
+
+.arc-comment-item__author {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.arc-comment-item__text {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.arc-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.arc-comment-form input,
+.arc-comment-form textarea {
+  font: inherit;
+  font-size: 11px;
+  padding: 7px 10px;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--text);
+  resize: none;
+  outline: none;
+}
+
+.arc-comment-form input:focus,
+.arc-comment-form textarea:focus {
+  border-color: var(--text);
+}
+
+.arc-comment-form__submit {
+  align-self: flex-end;
+  font: inherit;
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.arc-comment-form__submit:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.arc-comment-empty {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 8px 0;
+}
+
+/* ── 빈 상태 ── */
+.arc-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}

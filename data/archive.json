@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "arc-1",
+      "category": "music",
+      "title": "Track Title",
+      "artist": "Artist Name",
+      "cover": "",
+      "rating": 5,
+      "note": "",
+      "url": ""
+    },
+    {
+      "id": "arc-2",
+      "category": "anime",
+      "title": "Anime Title",
+      "image": "",
+      "rating": 4,
+      "note": "",
+      "year": "2024"
+    },
+    {
+      "id": "arc-3",
+      "category": "movie",
+      "title": "Movie Title",
+      "image": "",
+      "rating": 4,
+      "note": "",
+      "year": "2024"
+    },
+    {
+      "id": "arc-4",
+      "category": "drama",
+      "title": "Drama Title",
+      "image": "",
+      "rating": 3,
+      "note": "",
+      "year": "2024"
+    },
+    {
+      "id": "arc-5",
+      "category": "literature",
+      "title": "Book Title",
+      "image": "",
+      "rating": 5,
+      "note": "",
+      "year": "2024",
+      "author": "Author"
+    },
+    {
+      "id": "arc-6",
+      "category": "ect",
+      "title": "Title",
+      "image": "",
+      "rating": 4,
+      "note": "",
+      "year": "2024"
+    }
+  ]
+}

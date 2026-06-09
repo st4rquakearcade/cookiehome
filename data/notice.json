@@ -1,0 +1,22 @@
+{
+  "items": [
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" },
+    { "title": "텍스트", "url": "" }
+  ],
+  "folded": {
+    "label": "접은 글",
+    "items": [
+      { "title": "텍스트", "url": "" },
+      { "title": "텍스트", "url": "" },
+      { "title": "텍스트", "url": "" }
+    ]
+  }
+}

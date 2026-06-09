@@ -1,0 +1,14 @@
+{
+  "categories": [
+    { "id": "imp", "name": "중요", "color": "#c6c6c6" },
+    { "id": "day", "name": "일상", "color": "#c6c6c6" }
+  ],
+  "events": [
+    { "id": "e1", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "day", "start": "2026-05-01", "end": "2026-05-01", "repeat": "none", "doneDates": [] },
+    { "id": "e2", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "day", "start": "2026-05-01", "end": "2026-05-01", "repeat": "none", "doneDates": ["2026-05-01"] },
+    { "id": "e3", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "imp", "start": "2026-01-01", "end": "2026-01-03", "repeat": "none", "doneDates": [] },
+    { "id": "e4", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "day", "start": "2026-01-05", "end": "2026-01-05", "repeat": "none", "doneDates": [] },
+    { "id": "e5", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "imp", "start": "2026-01-12", "end": "2026-01-16", "repeat": "none", "doneDates": [] },
+    { "id": "e6", "title": "일정명", "memo": "메모", "time": "00:00", "catId": "day", "start": "2026-01-09", "end": "2026-01-09", "repeat": "none", "doneDates": [] }
+  ]
+}

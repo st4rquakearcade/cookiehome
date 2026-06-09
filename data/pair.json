@@ -1,0 +1,42 @@
+{
+  "categories": [
+    { "id": "cp", "label": "CP" },
+    { "id": "ncp", "label": "NCP" },
+    { "id": "dream", "label": "DREAM" },
+    { "id": "ect", "label": "ECT." }
+  ],
+  "items": [
+    {
+      "category": "cp",
+      "title": "텍스트",
+      "names": "이름 × 이름",
+      "body": "텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트",
+      "since": "TEXT",
+      "image": ""
+    },
+    {
+      "category": "cp",
+      "title": "텍스트",
+      "names": "이름 × 이름",
+      "body": "텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트",
+      "since": "TEXT",
+      "image": ""
+    },
+    {
+      "category": "cp",
+      "title": "텍스트",
+      "names": "이름 × 이름",
+      "body": "텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트",
+      "since": "TEXT",
+      "image": ""
+    },
+    {
+      "category": "ncp",
+      "title": "텍스트",
+      "names": "이름 × 이름",
+      "body": "텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트 텍스트",
+      "since": "TEXT",
+      "image": ""
+    }
+  ]
+}
